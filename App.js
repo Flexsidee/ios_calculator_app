@@ -5,38 +5,46 @@ import AppButton from "./app/components/AppButton";
 import colors from "./app/config/colors";
 
 export default function App() {
-	const [input, setInput] = useState(0.0);
-	const [input2, setInput2] = useState(0);
+	const [input, setInput] = useState(0);
+	const [result, setResult] = useState(0);
 	const [operator, setOperator] = useState(null);
+	const [showResult, setShowResult] = useState(false);
 
-	let displayedText = input;
-	console.log("displayedTextLength", displayedText.length);
-	if (displayedText > 999999999) {
-		displayedText = displayedText.toString();
-		displayedText =
-			displayedText.slice(displayedText.length - 9, displayedText.length - 6) +
-			"," +
-			displayedText.slice(displayedText.length - 6, displayedText.length - 3) +
-			"," +
-			displayedText.slice(displayedText.length - 3);
-	} else if (displayedText > 999999) {
-		displayedText = displayedText.toString();
-		displayedText =
-			displayedText.slice(0, displayedText.length - 6) +
-			"," +
-			displayedText.slice(displayedText.length - 6, displayedText.length - 3) +
-			"," +
-			displayedText.slice(displayedText.length - 3);
-	} else if (displayedText > 999) {
-		displayedText = displayedText.toString();
-		displayedText =
-			displayedText.slice(0, displayedText.length - 3) +
-			"," +
-			displayedText.slice(displayedText.length - 3);
-	}
-	console.log("displayedText", displayedText);
-	console.log("displayedTextLength", displayedText.length);
+	console.log("input", input);
+	console.log("operator", operator);
+	console.log("result", result);
+	console.log("showResult", showResult);
 	console.log("-------------------");
+
+	// let displayedText = input;
+	// console.log("displayedTextLength", displayedText.length);
+	// if (displayedText > 999999999) {
+	// 	displayedText = displayedText.toString();
+	// 	displayedText =
+	// 		displayedText.slice(displayedText.length - 9, displayedText.length - 6) +
+	// 		"," +
+	// 		displayedText.slice(displayedText.length - 6, displayedText.length - 3) +
+	// 		"," +
+	// 		displayedText.slice(displayedText.length - 3);
+	// } else if (displayedText > 999999) {
+	// 	displayedText = displayedText.toString();
+	// 	displayedText =
+	// 		displayedText.slice(0, displayedText.length - 6) +
+	// 		"," +
+	// 		displayedText.slice(displayedText.length - 6, displayedText.length - 3) +
+	// 		"," +
+	// 		displayedText.slice(displayedText.length - 3);
+	// } else if (displayedText > 999) {
+	// 	displayedText = displayedText.toString();
+	// 	displayedText =
+	// 		displayedText.slice(0, displayedText.length - 3) +
+	// 		"," +
+	// 		displayedText.slice(displayedText.length - 3);
+	// }
+	// console.log("displayedText", displayedText);
+	// console.log("displayedTextLength", displayedText.length);
+	// console.log("-------------------");
+
 	// let displayedText = input.toString();
 	// console.log("displayedTextLength", displayedText.length);
 	// if (displayedText.length == 9) {
@@ -63,35 +71,35 @@ export default function App() {
 	// console.log("displayedTextLength", displayedText.length);
 	// console.log("-------------------");
 
-	const handleNumber = (number) => {
-		let currenText = input.toString();
-		let newText = currenText + number.toString();
-		let newNumber = parseInt(newText);
-		setInput(newNumber);
-	};
-
-	const handleDecimal = () => {
-		let currenText = input.toString();
-		if (input === 0) {
-			currenText = "0.";
-			setInput(parseFloat(currenText));
-		}
-	};
-
 	const handleButtonClick = (button) => {
 		if (button === "AC" || button === "C") {
 			setInput(0);
+			setResult(0);
+			setOperator(null);
+			setShowResult(false);
 		} else if (button === "negate") {
-			setInput(input * -1);
+			if (operator === null) {
+				setInput(input * -1);
+			} else {
+				setResult(result * -1);
+			}
 		} else if (button === "%") {
-			setInput(input / 100);
-		} else if (button === "/") {
-		} else if (button === "x") {
-		} else if (button === "-") {
-		} else if (button === "+") {
+			if (operator === null) {
+				setInput(input / 100);
+			} else {
+				setResult(result / 100);
+			}
 		} else if (button === "=") {
+			handleResult();
 		} else if (button === ".") {
 			handleDecimal();
+		} else if (
+			button === "/" ||
+			button === "x" ||
+			button === "-" ||
+			button === "+"
+		) {
+			handleOperator(button);
 		} else if (
 			button === "1" ||
 			button === "2" ||
@@ -108,18 +116,66 @@ export default function App() {
 		}
 	};
 
+	const handleDecimal = () => {
+		let currenText = input.toString();
+		if (input === 0) {
+			currenText = "0.";
+			setInput(parseFloat(currenText));
+		}
+	};
+
+	const handleNumber = (number) => {
+		let currenText = input.toString();
+		let newText = currenText + number.toString();
+		let newNumber = parseFloat(newText);
+		setInput(newNumber);
+	};
+
+	const handleOperator = (op) => {
+		// setResult(input);
+		// setInput(0);
+		// setOperator(operator);
+		if (operator === null) {
+			setResult(input);
+			setInput(0);
+			setOperator(op);
+		} else {
+			setInput(0);
+			setOperator(op);
+			// setShowResult(false);
+			// handleResult();
+		}
+	};
+
+	const handleResult = () => {
+		if (operator === null) {
+			return;
+		} else {
+			if (operator === "+") {
+				setResult(result + input);
+			} else if (operator === "-") {
+				setResult(result - input);
+			} else if (operator === "x") {
+				setResult(result * input);
+			} else if (operator === "/") {
+				setResult(result / input);
+			}
+			setShowResult(true);
+		}
+	};
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<View style={styles.body}>
-				{/* <Text style={styles.display}>{input}</Text> */}
-				<Text style={styles.display}>{displayedText}</Text>
+				<Text style={styles.display}>{!showResult ? input : result}</Text>
+				{/* <Text style={styles.display}>{displayedText}</Text> */}
 				<View style={styles.buttonsRow}>
 					<AppButton
 						bg="lightGray"
 						color="black"
 						onPress={() => handleButtonClick(input === 0 ? "AC" : "C")}
 					>
-						{input === 0 ? "AC" : "C"}
+						{input === 0 && result === 0 && operator === null ? "AC" : "C"}
 					</AppButton>
 					<AppButton
 						bg="lightGray"
