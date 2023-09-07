@@ -2,6 +2,7 @@ import { useState } from "react";
 import { SafeAreaView, StyleSheet, View } from "react-native";
 
 import AppButton from "../components/AppButton";
+import { buttons } from "../components/calculatorButtons";
 import colors from "../config/colors";
 import DisplayedText from "../components/DisplayedText";
 
@@ -186,166 +187,10 @@ const CalculatorScreen = () => {
 		/>
 	);
 
-	const buttons = [
-		[
-			{
-				text: input == 0 && result === null && operator === null ? "AC" : "C",
-				bg: "lightGray",
-				color: "black",
-				operatorButton: false,
-			},
-			{
-				text: "+/-",
-				bg: "lightGray",
-				color: "black",
-				onPress: () => handleButtonClick("+/-"),
-				operatorButton: false,
-			},
-			{
-				text: "%",
-				bg: "lightGray",
-				color: "black",
-				operatorButton: false,
-			},
-			{
-				value: "/",
-				identifier: "\u00F7",
-				operatorButton: true,
-			},
-		],
-		[
-			{
-				text: "7",
-				operatorButton: false,
-			},
-			{
-				text: "8",
-				operatorButton: false,
-			},
-			{
-				text: "9",
-				operatorButton: false,
-			},
-			{
-				value: "x",
-				identifier: "\u00D7",
-				operatorButton: true,
-			},
-		],
-		[
-			{
-				text: "4",
-				operatorButton: false,
-			},
-			{
-				text: "5",
-				operatorButton: false,
-			},
-			{
-				text: "6",
-				operatorButton: false,
-			},
-			{
-				value: "-",
-				identifier: "\u2212",
-				operatorButton: true,
-			},
-		],
-		[
-			{
-				text: "1",
-				operatorButton: false,
-			},
-			{
-				text: "2",
-				operatorButton: false,
-			},
-			{
-				text: "3",
-				operatorButton: false,
-			},
-			{
-				value: "\u002B",
-				identifier: "+",
-				operatorButton: true,
-			},
-		],
-		[
-			{
-				text: "0",
-				bigButton: true,
-				operatorButton: false,
-			},
-			{
-				text: ".",
-				operatorButton: false,
-			},
-			{
-				bg: "orange",
-				text: "=",
-				operatorButton: false,
-			},
-		],
-	];
-
 	return (
 		<SafeAreaView style={styles.container}>
 			<View style={styles.body}>
 				<DisplayedText output={!showResult ? input : result} />
-				{/* 	<View style={styles.buttonsRow}>
-					<AppButton
-						bg="lightGray"
-						color="black"
-						onPress={() => handleButtonClick(input === 0 ? "AC" : "C")}
-						text={
-							input == 0 && result === null && operator === null ? "AC" : "C"
-						}
-					/>
-					<AppButton
-						bg="lightGray"
-						color="black"
-						onPress={() => handleButtonClick("+/-")}
-						text="+/-"
-					/>
-					<AppButton
-						bg="lightGray"
-						color="black"
-						onPress={() => handleButtonClick("%")}
-						text={"\u0025"}
-					/>
-					<OperatorButton value="/" identifier={"\u00F7"} />
-				</View>
-				<View style={styles.buttonsRow}>
-					<AppButton onPress={() => handleButtonClick("7")} text="7" />
-					<AppButton onPress={() => handleButtonClick("8")} text="8" />
-					<AppButton onPress={() => handleButtonClick("9")} text="9" />
-					<OperatorButton value="x" identifier={"\u00D7"} />
-				</View>
-				<View style={styles.buttonsRow}>
-					<AppButton onPress={() => handleButtonClick("4")} text="4" />
-					<AppButton onPress={() => handleButtonClick("5")} text="5" />
-					<AppButton onPress={() => handleButtonClick("6")} text="6" />
-					<OperatorButton value="-" identifier={"\u2212"} />
-				</View>
-				<View style={styles.buttonsRow}>
-					<AppButton onPress={() => handleButtonClick("1")} text="1" />
-					<AppButton onPress={() => handleButtonClick("2")} text="2" />
-					<AppButton onPress={() => handleButtonClick("3")} text="3" />
-					<OperatorButton value="+" identifier={"\u002B"} text="+" />
-				</View>
-				<View style={styles.buttonsRow}>
-					<AppButton
-						bigButton={true}
-						onPress={() => handleButtonClick("0")}
-						text="0"
-					/>
-					<AppButton onPress={() => handleButtonClick(".")} text="." />
-					<AppButton
-						bg="orange"
-						onPress={() => handleButtonClick("=")}
-						text={"\u003D"}
-					/>
-				</View> */}
 				{buttons.map((row, index) => (
 					<View key={index} style={styles.buttonsRow}>
 						{row.map((button, index) =>
@@ -361,8 +206,22 @@ const CalculatorScreen = () => {
 									bg={button.bg}
 									bigButton={button.bigButton ? true : false}
 									color={button.color}
-									onPress={() => handleButtonClick(button.text)}
-									text={button.text}
+									onPress={() =>
+										handleButtonClick(
+											button.clearButton
+												? input == 0
+													? "AC"
+													: "C"
+												: button.text
+										)
+									}
+									text={
+										button.clearButton
+											? input == 0 && result === null && operator === null
+												? "AC"
+												: "C"
+											: button.text
+									}
 								/>
 							)
 						)}
