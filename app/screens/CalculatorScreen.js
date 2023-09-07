@@ -86,14 +86,17 @@ const CalculatorScreen = () => {
 
 	const handleDecimal = () => {
 		if (input == "0") {
+			// when there is not input yet and user presses '.'
 			setInput("0.");
 			setHasDecimal(true);
 		}
 		if (hasDecimal === false) {
+			// when there is already an input and user presses '.'
 			setInput(input + ".");
 			setHasDecimal(true);
 		}
 		if (result !== null) {
+			// when there is already a result and user presses '.', it resets all data to default
 			setInput("0.");
 			setHasDecimal(true);
 			setBuffer([]);
@@ -112,14 +115,17 @@ const CalculatorScreen = () => {
 
 	const handleOperator = (op) => {
 		if (operator === null && result === null && buffer.length === 0) {
+			//when user enters a number and presses an operator for the first time
 			setBuffer([input, op]);
 			setInput(0);
 			setOperator(op);
 		} else if (operator !== null && buffer.length > 0) {
+			// when user enters a number, presses an operator when there is already an input in the buffer
 			setBuffer([...buffer, input, op]);
 			setInput(0);
 			setOperator(op);
 		} else if (operator !== null && buffer.length === 0) {
+			// when user enters a number, presses an operator when there is no input in the buffer
 			setBuffer([result, op]);
 			setInput(0);
 			setOperator(op);
@@ -130,11 +136,13 @@ const CalculatorScreen = () => {
 
 	const handleResult = () => {
 		if (operator === null && result === null && buffer.length === 0) {
+			//user entered a number and pressed '='
 			setBuffer([input]);
 			setResult(input);
 			setInput(0);
 			setShowResult(true);
 		} else if (operator !== null && result !== null && buffer.length === 0) {
+			// user entered a number, pressed an operator, entered another number continously before finally pressing and pressed '=' while there is already a result
 			let answer = null;
 			if (operator === "+") {
 				answer = parseFloat(parseFloat(result) + parseFloat(input));
@@ -148,6 +156,7 @@ const CalculatorScreen = () => {
 			setResult(answer);
 			setShowResult(true);
 		} else if (operator !== null && result === null && buffer.length > 0) {
+			// user entered a number, pressed an operator, entered another number continously before finally pressing and pressed '=' while there is no result yet
 			let bufferExpression = convertBufferToResult(buffer);
 			let answer = eval(bufferExpression + input);
 			setResult(answer);
@@ -182,7 +191,23 @@ const CalculatorScreen = () => {
 					>
 						{"\u0025"}
 					</AppButton>
-					<AppButton bg="orange" onPress={() => handleButtonClick("/")}>
+					<AppButton
+						bg={
+							operator === "/" &&
+							buffer[buffer.length - 1] === "/" &&
+							input == "0"
+								? "lightGray"
+								: "orange"
+						}
+						color={
+							operator === "/" &&
+							buffer[buffer.length - 1] === "/" &&
+							input == "0"
+								? "orange"
+								: "white"
+						}
+						onPress={() => handleButtonClick("/")}
+					>
 						{"\u00F7"}
 					</AppButton>
 				</View>
@@ -191,8 +216,20 @@ const CalculatorScreen = () => {
 					<AppButton onPress={() => handleButtonClick("8")}>8</AppButton>
 					<AppButton onPress={() => handleButtonClick("9")}>9</AppButton>
 					<AppButton
-						bg={operator === "x" ? "lightGray" : "orange"}
-						color={operator === "x" ? "orange" : "white"}
+						bg={
+							operator === "x" &&
+							buffer[buffer.length - 1] === "x" &&
+							input == "0"
+								? "lightGray"
+								: "orange"
+						}
+						color={
+							operator === "x" &&
+							buffer[buffer.length - 1] === "x" &&
+							input == "0"
+								? "orange"
+								: "white"
+						}
 						onPress={() => handleButtonClick("x")}
 					>
 						{"\u00D7"}
@@ -202,7 +239,23 @@ const CalculatorScreen = () => {
 					<AppButton onPress={() => handleButtonClick("4")}>4</AppButton>
 					<AppButton onPress={() => handleButtonClick("5")}>5</AppButton>
 					<AppButton onPress={() => handleButtonClick("6")}>6</AppButton>
-					<AppButton bg="orange" onPress={() => handleButtonClick("-")}>
+					<AppButton
+						bg={
+							operator === "-" &&
+							buffer[buffer.length - 1] === "-" &&
+							input == "0"
+								? "lightGray"
+								: "orange"
+						}
+						color={
+							operator === "-" &&
+							buffer[buffer.length - 1] === "-" &&
+							input == "0"
+								? "orange"
+								: "white"
+						}
+						onPress={() => handleButtonClick("-")}
+					>
 						{"\u2212"}
 					</AppButton>
 				</View>
@@ -210,7 +263,23 @@ const CalculatorScreen = () => {
 					<AppButton onPress={() => handleButtonClick("1")}>1</AppButton>
 					<AppButton onPress={() => handleButtonClick("2")}>2</AppButton>
 					<AppButton onPress={() => handleButtonClick("3")}>3</AppButton>
-					<AppButton bg="orange" onPress={() => handleButtonClick("+")}>
+					<AppButton
+						bg={
+							operator === "+" &&
+							buffer[buffer.length - 1] === "+" &&
+							input == "0"
+								? "lightGray"
+								: "orange"
+						}
+						color={
+							operator === "+" &&
+							buffer[buffer.length - 1] === "+" &&
+							input == "0"
+								? "orange"
+								: "white"
+						}
+						onPress={() => handleButtonClick("+")}
+					>
 						{"\u002B"}
 					</AppButton>
 				</View>
