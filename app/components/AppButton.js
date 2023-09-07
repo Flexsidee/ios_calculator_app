@@ -1,10 +1,4 @@
-import {
-	Dimensions,
-	Pressable,
-	StyleSheet,
-	Text,
-	TouchableOpacity,
-} from "react-native";
+import { Dimensions, Pressable, StyleSheet, Text } from "react-native";
 
 import colors from "../config/colors";
 
@@ -12,8 +6,8 @@ const AppButton = ({
 	bg = "darkGray",
 	bigButton = false,
 	color = "white",
-	children,
 	onPress,
+	text,
 }) => {
 	return (
 		<Pressable
@@ -34,7 +28,7 @@ const AppButton = ({
 				},
 			]}
 		>
-			<Text style={[styles.text, { color: colors[color] }]}>{children}</Text>
+			<Text style={[styles.text, { color: colors[color] }]}>{text}</Text>
 		</Pressable>
 	);
 };
