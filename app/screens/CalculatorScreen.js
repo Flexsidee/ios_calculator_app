@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { SafeAreaView, StyleSheet, View } from "react-native";
+import { SafeAreaView, StatusBar, StyleSheet, View } from "react-native";
 
 import AppButton from "../components/AppButton";
 import { buttons } from "../components/calculatorButtons";
@@ -13,15 +13,6 @@ const CalculatorScreen = () => {
 	const [result, setResult] = useState(null);
 	const [hasDecimal, setHasDecimal] = useState(false);
 	const [showResult, setShowResult] = useState(false);
-
-	console.log("input", input);
-	console.log("buffer", buffer);
-	console.log("operator", operator);
-	console.log("result", result);
-	console.log("hasDecimal", hasDecimal);
-	console.log("showResult", showResult);
-	console.log("-------------------");
-	console.log("              ");
 
 	const convertBufferToResult = (inputArray) => {
 		const expression = inputArray
@@ -86,11 +77,11 @@ const CalculatorScreen = () => {
 	};
 
 	const handleDecimal = () => {
-		if (input == "0") {
-			// when there is not input yet and user presses '.'
-			setInput("0.");
-			setHasDecimal(true);
-		}
+		// if (input == "0" && result === null && operator === null && hasDecimal === false) {
+		// 	// when there is not input yet and user presses '.'
+		// 	setInput("0.");
+		// 	setHasDecimal(true);
+		// }
 		if (hasDecimal === false) {
 			// when there is already an input and user presses '.'
 			setInput(input + ".");
@@ -111,7 +102,9 @@ const CalculatorScreen = () => {
 		let currenText = input;
 		let newText = currenText + number;
 		let newNumber = parseFloat(newText);
-		setInput(newNumber);
+		if (newText.length < 10) {
+			setInput(newNumber);
+		}
 	};
 
 	const handleOperator = (op) => {
@@ -187,10 +180,44 @@ const CalculatorScreen = () => {
 		/>
 	);
 
+	let displayedText = !showResult ? input.toString() : result.toString();
+	// console.log("displayedTextLength", displayedText.length);
+	// if (displayedText.length == 9) {
+	// 	displayedText =
+	// 		displayedText.slice(displayedText.length - 9, displayedText.length - 6) +
+	// 		"," +
+	// 		displayedText.slice(displayedText.length - 6, displayedText.length - 3) +
+	// 		"," +
+	// 		displayedText.slice(displayedText.length - 3);
+	// } else if (displayedText.length > 6) {
+	// 	displayedText =
+	// 		displayedText.slice(0, displayedText.length - 6) +
+	// 		"," +
+	// 		displayedText.slice(displayedText.length - 6, displayedText.length - 3) +
+	// 		"," +
+	// 		displayedText.slice(displayedText.length - 3);
+	// } else if (displayedText.length > 3) {
+	// 	displayedText =
+	// 		displayedText.slice(0, displayedText.length - 3) +
+	// 		"," +
+	// 		displayedText.slice(displayedText.length - 3);
+	// }
+	// console.log("displayedText", displayedText);
+	// console.log("displayedTextLength", displayedText.length);
+	// console.log("-------------------");
+	// console.log("input", input);
+	// console.log("buffer", buffer);
+	// console.log("operator", operator);
+	// console.log("result", result);
+	// console.log("hasDecimal", hasDecimal);
+	// console.log("showResult", showResult);
+	// console.log("-------------------");
+	// console.log("              ");
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<View style={styles.body}>
-				<DisplayedText output={!showResult ? input : result} />
+				<DisplayedText output={displayedText} />
 				{buttons.map((row, index) => (
 					<View key={index} style={styles.buttonsRow}>
 						{row.map((button, index) =>

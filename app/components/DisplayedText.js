@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Platform, StyleSheet, Text } from "react-native";
 
 import colors from "../config/colors";
 
@@ -24,7 +24,7 @@ export default DisplayedText;
 const styles = StyleSheet.create({
 	display: {
 		color: colors.white,
-		fontFamily: "Helvetica Neue",
+		fontFamily: Platform.OS === "ios" ? "Helvetica Neue" : "Roboto",
 		fontSize: 70,
 		marginBottom: 10,
 		marginRight: 10,

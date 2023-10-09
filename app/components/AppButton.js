@@ -1,4 +1,4 @@
-import { Dimensions, Pressable, StyleSheet, Text } from "react-native";
+import { Dimensions, Platform, Pressable, StyleSheet, Text } from "react-native";
 
 import colors from "../config/colors";
 
@@ -53,10 +53,7 @@ const styles = StyleSheet.create({
 		width: buttonWidth,
 	},
 	text: {
-		fontFamily: "Helvetica Neue",
+		fontFamily: Platform.OS === 'ios' ?  "Helvetica Neue" : "Roboto",
 		fontSize: 40,
-	},
-	test: {
-		// backgroundColor: "red",
 	},
 });
