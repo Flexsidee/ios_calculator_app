@@ -6,6 +6,8 @@ import { buttons } from "../components/calculatorButtons";
 import colors from "../config/colors";
 import DisplayedText from "../components/DisplayedText";
 
+Platform.OS == "android" && StatusBar.setBackgroundColor(colors.black);
+
 const CalculatorScreen = () => {
 	const [input, setInput] = useState("0");
 	const [operator, setOperator] = useState(null);
